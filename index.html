@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Vibe Coding Cliff - Research project by David Craig</title>
+<meta name="description" content="Research into how non-technical New Zealand founders use AI tools to build software, and what happens when they try to scale. Take the 3-minute survey.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2ECE0;
+    --paper-2:#EAE1CF;
+    --ink:#1C1A16;
+    --ink-soft:#56503F;
+    --line:#D6CAB2;
+    --line-soft:#E1D7C3;
+    --accent:#C2461F;
+    --accent-deep:#8F3115;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Hanken Grotesk',sans-serif;
+    font-size:18px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  main{display:block}
+
+  /* ---------- header ---------- */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:26px 0 0;font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .topbar .tag{display:flex;align-items:center;gap:9px}
+  .topbar .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block}
+  .topbar a{color:var(--ink-soft);text-decoration:none;border-bottom:1px solid transparent;transition:.2s}
+  .topbar a:hover{color:var(--ink);border-color:var(--accent)}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 30px;position:relative}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:26px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:500;
+    font-size:clamp(48px,9vw,104px);line-height:.98;letter-spacing:-.02em;
+    max-width:13ch;
+  }
+  h1 .em{font-style:italic;color:var(--accent)}
+  .lede{
+    font-family:'Fraunces',serif;font-weight:400;font-style:italic;
+    font-size:clamp(20px,2.6vw,27px);line-height:1.4;color:var(--ink-soft);
+    max-width:30ch;margin-top:30px;
+  }
+
+  /* contour cliff */
+  .terrain{
+    position:relative;margin:30px 0 8px;height:200px;width:100%;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .terrain svg{position:absolute;inset:0;width:100%;height:100%}
+  .terrain .lbl{
+    position:absolute;font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;
+  }
+  .terrain .lbl.summit{left:58%;top:6px;transform:translateX(-50%);color:var(--ink)}
+  .terrain .lbl.ridge{right:6px;top:12px;color:var(--accent)}
+  .massif-fill{fill:url(#massif)}
+  .contour{fill:none;stroke:var(--line);stroke-width:1.4}
+  .contour.faint{stroke:var(--line-soft);stroke-width:1.1;opacity:.6}
+  .contour.hot{stroke:var(--accent);stroke-width:2.4}
+  .peak-dot{fill:none;stroke:var(--ink-soft);stroke-width:1.4}
+  .ridge-dot{fill:var(--accent)}
+
+  .cta-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:38px}
+  .btn{
+    display:inline-flex;align-items:center;gap:11px;
+    font-family:'Hanken Grotesk',sans-serif;font-weight:600;font-size:16px;
+    padding:15px 26px;border-radius:2px;text-decoration:none;transition:.22s;cursor:pointer;border:1px solid var(--ink);
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-2px)}
+  .btn-primary .arrow{transition:.22s}
+  .btn-primary:hover .arrow{transform:translateX(4px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px)}
+  .mins{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-soft)}
+
+  /* ---------- section frame ---------- */
+  section.block{padding:78px 0;border-top:1px solid var(--line);position:relative}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:22px;display:block;
+  }
+  h2{
+    font-family:'Fraunces',serif;font-weight:500;font-size:clamp(30px,4.6vw,46px);
+    line-height:1.05;letter-spacing:-.015em;max-width:16ch;margin-bottom:26px;
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:54px}
+  p.body{font-size:18px;color:var(--ink);margin-bottom:18px;max-width:54ch}
+  p.body.soft{color:var(--ink-soft)}
+
+  /* hypothesis callout */
+  .hyp{
+    background:var(--paper-2);border-left:3px solid var(--accent);
+    padding:30px 32px;margin:8px 0 4px;border-radius:0 3px 3px 0;
+  }
+  .hyp .h-label{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+  }
+  .hyp p{font-family:'Fraunces',serif;font-size:21px;line-height:1.45;font-style:italic;color:var(--ink)}
+
+  /* ---------- about / credibility ---------- */
+  .about{display:grid;grid-template-columns:1.4fr 1fr;gap:54px;align-items:start}
+  .card{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:3px;padding:30px;
+  }
+  .card .name{font-family:'Fraunces',serif;font-size:24px;font-weight:600;margin-bottom:4px}
+  .card .role{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);margin-bottom:20px}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:22px}
+  .card li{display:flex;gap:12px;font-size:15.5px;color:var(--ink-soft);line-height:1.45}
+  .card li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:8px}
+  .card a.li{
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid var(--accent);padding-bottom:2px;transition:.2s;
+  }
+  .card a.li:hover{color:var(--accent)}
+  .disclaimer{
+    margin-top:24px;font-size:14.5px;color:var(--ink-soft);line-height:1.5;max-width:48ch;
+  }
+  .disclaimer strong{color:var(--ink);font-weight:600}
+
+  /* ---------- contribute ---------- */
+  .ways{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:8px}
+  .way{
+    border:1px solid var(--line);border-radius:3px;padding:32px;background:var(--paper);
+    display:flex;flex-direction:column;transition:.25s;position:relative;overflow:hidden;
+  }
+  .way .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);letter-spacing:.1em;margin-bottom:18px}
+  .way h3{font-family:'Fraunces',serif;font-weight:600;font-size:26px;margin-bottom:8px;line-height:1.1}
+  .way .time{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-soft);margin-bottom:18px}
+  .way p{font-size:16px;color:var(--ink-soft);margin-bottom:22px;flex:1}
+  .way .btn{align-self:flex-start}
+  .perks{
+    margin-top:34px;padding-top:30px;border-top:1px dashed var(--line);
+    display:flex;flex-wrap:wrap;gap:28px 44px;
+  }
+  .perk{max-width:24ch}
+  .perk .p-h{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .perk p{font-size:15px;color:var(--ink-soft);line-height:1.45}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:48px 0 70px}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:30px;align-items:flex-end}
+  .foot-grid .sig{font-family:'Fraunces',serif;font-size:22px}
+  .foot-grid .sig span{color:var(--accent)}
+  .foot-meta{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-soft);line-height:1.8}
+  .foot-meta a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent)}
+  .privacy{margin-top:30px;font-size:13.5px;color:var(--ink-soft);max-width:62ch;line-height:1.55}
+
+  /* ---------- reveal animation ---------- */
+  .reveal{opacity:0;transform:translateY(22px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.28s}
+  .d4{animation-delay:.40s}.d5{animation-delay:.52s}.d6{animation-delay:.64s}
+  .contour{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.9s ease forwards .3s}
+  .contour.hot{animation-delay:.6s;animation-duration:2.2s}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .massif-fill{opacity:0;animation:fade 1.3s ease forwards .9s}
+  .peak-dot,.ridge-dot{opacity:0;animation:fade .8s ease forwards}
+  .peak-dot{animation-delay:2.1s}
+  .ridge-dot{animation-delay:2.7s}
+  @keyframes fade{to{opacity:1}}
+  @media (prefers-reduced-motion:reduce){
+    .reveal,.contour{animation:none;opacity:1;transform:none;stroke-dashoffset:0}
+    .massif-fill,.peak-dot,.ridge-dot{animation:none;opacity:1}
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:760px){
+    body{font-size:17px}
+    .grid2,.about,.ways{grid-template-columns:1fr;gap:32px}
+    .terrain{height:170px}
+    section.block{padding:58px 0}
+    h1{font-size:clamp(42px,13vw,72px)}
+    .topbar .hide-sm{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <main>
+
+  <section class="hero" aria-labelledby="page-title">
+    <div class="eyebrow reveal d1">Research project</div>
+    <h1 id="page-title" class="reveal d2">The Vibe&nbsp;Coding <span class="em">Cliff</span></h1>
+    <p class="lede reveal d3">If you build software without writing code, what happens after the prototype?</p>
+
+    <div class="terrain reveal d4">
+      <svg viewBox="0 0 1000 230" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="massif" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C2461F" stop-opacity="0.10"/>
+            <stop offset="100%" stop-color="#C2461F" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path class="massif-fill" d="M0,190 C120,172 220,150 330,122 C440,94 512,66 578,50 C606,44 632,45 654,52 C686,62 710,116 738,152 C766,176 822,178 882,178 C928,178 964,179 1000,179 L1000,230 L0,230 Z"/>
+        <path class="contour" pathLength="1" d="M0,190 C120,172 220,150 330,122 C440,94 512,66 578,50 C606,44 632,45 654,52 C686,62 710,116 738,152 C766,176 822,178 882,178 C928,178 964,179 1000,179"/>
+        <path class="contour" pathLength="1" d="M0,197 C120,179 220,157 330,129 C440,101 512,73 578,57 C606,51 632,52 654,59 C686,69 710,123 738,159 C766,183 822,185 882,185 C928,185 964,186 1000,186"/>
+        <path class="contour" pathLength="1" d="M0,204 C120,186 220,164 330,136 C440,108 512,80 578,64 C606,58 632,59 654,66 C686,76 710,130 738,166 C766,190 822,192 882,192 C928,192 964,193 1000,193"/>
+        <path class="contour" pathLength="1" d="M0,211 C120,193 220,171 330,143 C440,115 512,87 578,71 C606,65 632,66 654,73 C686,83 710,137 738,173 C766,197 822,199 882,199 C928,199 964,200 1000,200"/>
+        <path class="contour hot" pathLength="1" d="M0,182 C120,164 220,142 330,114 C440,86 512,56 578,40 C620,34 700,34 800,35 C880,36 950,37 1000,38"/>
+        <circle class="peak-dot" cx="578" cy="40" r="4"/>
+        <circle class="ridge-dot" cx="978" cy="37" r="4.5"/>
+      </svg>
+      <span class="lbl summit">prototype works</span>
+      <span class="lbl ridge">some don't fall</span>
+    </div>
+
+    <div class="cta-row reveal d5">
+      <a href="https://form.typeform.com/to/y785YJkl" target="_blank" class="btn btn-primary">Take the survey <span class="arrow">→</span></a>
+      <span class="mins">3 minutes · anonymous</span>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="research-title">
+    <div class="grid2">
+      <div class="reveal d1">
+        <span class="kicker">Why this study exists</span>
+        <h2 id="research-title">
+          New tools are enabling more people than ever to build software.
+        </h2>
+      </div>
+      <div class="reveal d2">
+        <p class="body">
+          AI tools like Cursor, Lovable, Bolt, v0, Replit have unlocked software development for everyone. Coffee shop
+          owners, tradies, parents on the couch can take a problem they understand better than anyone else and start
+          building a solution.
+        </p>
+        <p class="body">
+          What the tools won't tell you is when your product is ready for real customers, real scale, and real security
+          pressure. I'm researching how founders build products, where AI-built products hold up, where they run
+          into trouble, and what founders who get past the cliff are doing differently.
+        </p>
+      </div>
+    </div>
+
+    <div class="hyp reveal d3">
+      <div class="h-label">The hunch I'm testing</div>
+      <p>
+        Generative AI tools are great at getting you quickly to a working prototype. But a working demo hides questions
+        of scale, security, and architecture. These problems tend to land months later, all at once. While this is the
+        norm, there's a meaningful number of startups built with AI that avoid the cliff. I'm interested in what these
+        founders are doing differently.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="who-title">
+    <span class="kicker reveal d1">Who's behind this</span>
+    <div class="about">
+      <div class="reveal d2">
+        <h2 id="who-title">A side project, run in my spare time.</h2>
+        <p class="body">
+          I'm a software engineer. For the last 14 years my job has been taking software from "it works" to "it works
+          reliably, securely, and at scale". This has often been in places where getting it wrong has real consequences,
+          like banks and government.
+        </p>
+        <p class="body">
+          If you're a founder who's built with AI tools, your experience is what I'm after, whether you sailed through
+          with no problems or hit road blocks along the way.
+        </p>
+      </div>
+      <div class="card reveal d3">
+        <h3 class="name">David Craig</h3>
+        <p class="role">Principal Engineer, BNZ · Wellington</p>
+        <ul>
+          <li>14+ years across financial services and government</li>
+          <li>Web applications, platform stability, security &amp; cloud architecture</li>
+        </ul>
+        <a class="li" href="https://www.linkedin.com/in/davidcraignz" target="_blank" rel="noopener">View LinkedIn →</a>
+        <p class="disclaimer"><strong>To be clear:</strong> This is a personal project run in my own time. It's not affiliated with or endorsed by my employer.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="take-part-title">
+    <span class="kicker reveal d1">how to take part</span>
+    <h2 id="take-part-title" class="reveal d2">Two ways to help shape the findings.</h2>
+    <div class="ways">
+      <div class="way reveal d3">
+        <div class="num">01 / SURVEY</div>
+        <h3>Fill out the survey</h3>
+        <div class="time">≈ 3 minutes · anonymous</div>
+        <p>
+          Ten quick questions about how you built, what's held up, and what hasn't. Open to any NZ founder who's used
+          AI tools to build software.
+        </p>
+        <a href="https://form.typeform.com/to/y785YJkl" target="_blank" class="btn btn-primary">Start the survey <span class="arrow">→</span></a>
+      </div>
+      <div class="way reveal d4">
+        <div class="num">02 / CONVERSATION</div>
+        <h3>Have a proper chat</h3>
+        <div class="time">≈ 30–45 minutes · coffee or call</div>
+        <p>
+          If you've been through it, I'd love to hear the full story. Relaxed, off-the-record by default chat, nothing
+          gets published without your permission.
+        </p>
+        <a href="https://www.linkedin.com/in/davidcraignz" target="_blank" class="btn btn-ghost">Connect on LinkedIn →</a>
+      </div>
+    </div>
+
+    <div class="perks reveal d5">
+      <div class="perk">
+        <div class="p-h">first look</div>
+        <p>Everyone who takes part gets the findings before they're published anywhere else.</p>
+      </div>
+      <div class="perk">
+        <div class="p-h">$100 prezzy draw</div>
+        <p>Complete the survey and you're in the draw for a $100 Prezzy card.</p>
+      </div>
+      <div class="perk">
+        <div class="p-h">30 mins on me</div>
+        <p>Sit down for an interview and I'll spend half an hour on your technical situation &mdash; no strings.</p>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>
+    <div class="foot-grid">
+      <div class="sig">The Vibe Coding <span>Cliff</span></div>
+      <div class="foot-meta">
+        <a href="https://www.linkedin.com/in/davidcraignz" target="_blank" rel="noopener">linkedin.com/in/davidcraignz</a>
+      </div>
+    </div>
+    <p class="privacy">
+      Survey responses are anonymous unless you choose to share your email. Anything you tell me in conversation stays
+      off the record by default, and any quote used in the published research is sent back to you for sign-off first.
+      Recordings, if any, are for my notes only and are deleted afterwards.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
